@@ -14,8 +14,10 @@
                 </div>
                 <div class="media-frame-router" style="left: 16px; top: 49px;">
                     <div class="media-router">
-                        <a href="#" class="media-menu-item active">图片</a>
-                        <a href="#" class="media-menu-item">文件</a>
+                        <a href="#" class="media-menu-item active" id="wp-kcfinder-type-images">图片</a>
+                        <a href="#" class="media-menu-item" id="wp-kcfinder-type-files">文件</a>
+                        <a href="#" class="media-menu-item" id="wp-kcfinder-type-videos">视频</a>
+                        <a href="#" class="media-menu-item" id="wp-kcfinder-type-audios">音乐</a>
                     </div>
                 </div>
                 <div class="media-frame-content" style="left:16px; border-left: 1px solid #ddd; overflow: hidden;">
@@ -23,15 +25,23 @@
                         <iframe id="kcfinder_frame" src="" style="width:100%; height:100%"></iframe>
                     </div>
                     <div class="media-sidebar">
-                        <div class="media-uploader-status" style="display: none;">
-                            <h3>正上传</h3>
+                        <div class="media-uploader-status">
+                            <h3>附件详情</h3>
                         </div>
+                        <label class="setting">
+                            <span class="name">Name</span>
+                            <input type="text" value="" readonly="">
+                        </label>
+                        <label class="setting">
+                            <span class="name">URL</span>
+                            <input id="wp-kcfinder-url" type="text" value="" readonly="">
+                        </label>
                     </div>
                 </div>
                 <div class="media-frame-toolbar" style="left: 300px;">
                     <div class="media-toolbar">
                         <div class="media-toolbar-primary">
-                            <a href="#" id="__wp-ae-insert-code"
+                            <a href="#" id="__wp-kc-insert-media"
                                 class="button media-button button-primary button-large media-button-insert"
                                 ><?php echo __('Insert into post', 'wp_kf')?></a>
                         </div>
@@ -42,28 +52,60 @@
     </div>
     <div class="media-modal-backdrop"></div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript">    
     (function(){
         var kcfindPath = '<?php echo $this->currentUrl . '/kcfinder' ?>';
         var $ = jQuery;
-        $(document).ready(function(){
+        $(document).ready(function() {
+            var wpKcfinderType = '';
+            var selectNode = $('#wp-kcfinder-type-images');
+
+            var setUrl = function() {
+                if (wpKcfinderType === '') {
+                    wpKcfinderType = 'images';
+                }
+                $('#kcfinder_frame').attr('src', kcfindPath + '?lang=zh-cn&type=' + wpKcfinderType);
+            };
+
+            var makeHtml = function() {
+                var url = $('#wp-kcfinder-url').val();
+                var html = '';
+                if (wpKcfinderType === 'images') {
+                    html = '<img src="' + url + '"/>'
+                }
+                return html;
+            }
+
+            $('a[id^=wp-kcfinder-type]').click(function(var1, var2) {
+                selectNode.removeClass('active');
+                selectNode = $(this);
+                selectNode.addClass('active');
+                var id = selectNode.attr('id');
+                wpKcfinderType = id.substring('wp-kcfinder-type-'.length);
+                setUrl();
+            });
+
             $('#wp-kcfinder-button').click(function() {
                 $('#__wp-kc-add-media-div').show();
-                $('#kcfinder_frame').attr('src', kcfindPath);
+                if (wpKcfinderType === '') {
+                    setUrl();
+                }
             });
             $('#__wp-kc-add-media-close').click(function() {
                 $('#__wp-kc-add-media-div').hide();
             });
             $('#__wp-kc-insert-media').click(function() {
-                send_to_editor(html);
+                send_to_editor(makeHtml());
                 $('#__wp-kc-add-media-div').hide();
                 return false;
             });
         });
     })();
+
+    var wpKcfinderUrl = document.getElementById('wp-kcfinder-url');
     window.KCFinder = {
         callBack: function(url) {
-            console.log(url);
+            wpKcfinderUrl.value = url;
         }
     };
 </script>
