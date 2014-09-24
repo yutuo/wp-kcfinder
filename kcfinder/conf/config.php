@@ -22,7 +22,7 @@ $_CONFIG = array(
 // GENERAL SETTINGS
 
     'disabled' => !(function_exists('current_user_can') && current_user_can('upload_files')),
-    'uploadURL' => "upload",
+    'uploadURL' => "/uploads",
     'uploadDir' => dirname(__FILE__).'/../../../../../uploads',
     'theme' => "default",
 

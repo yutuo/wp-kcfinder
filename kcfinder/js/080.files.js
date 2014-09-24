@@ -20,7 +20,7 @@ _.initFiles = function() {
 
     $('.file').unbind().click(function(e) {
         _.selectFile($(this), e);
-
+        _.returnFile($(this));
     }).rightClick(function(el, e) {
         _.menuFile($(el), e);
     }).dblclick(function() {
