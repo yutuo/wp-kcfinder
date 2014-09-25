@@ -30,9 +30,9 @@ $_CONFIG = array(
 
     // (F)CKEditor types
         'files'   =>  "",
-        'images'  =>  "*img",
-        'audios'  => "mp3 wav",
-        'videos'  => "mp4 ogg",
+        'images'  =>  "jpg jpeg png gif",
+        'audios'  => "mp3 m4a ogg wav",
+        'videos'  => "mp4 mov wmv avi mpg ogv 3gp 3g2",
     ),
 
 
