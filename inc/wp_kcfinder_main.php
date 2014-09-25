@@ -29,10 +29,6 @@
                             <h3>附件详情</h3>
                         </div>
                         <label class="setting">
-                            <span class="name">Name</span>
-                            <input type="text" value="" readonly="">
-                        </label>
-                        <label class="setting">
                             <span class="name">URL</span>
                             <input id="wp-kcfinder-url" type="text" value="" readonly="">
                         </label>
@@ -70,8 +66,24 @@
             var makeHtml = function() {
                 var url = $('#wp-kcfinder-url').val();
                 var html = '';
+                var lastIndex = url.lastIndexOf('.');
+                var extentname = '';
+                if (lastIndex === -1 || lastIndex >= url.length - 3) {
+                    extentname = '';
+                } else {
+                    extentname = url.substring(lastIndex + 1);
+                }
+
                 if (wpKcfinderType === 'images') {
                     html = '<img src="' + url + '"/>'
+                } else if (wpKcfinderType === 'files') {
+                    html = '<a class="download" href="' + url + '" target="_blank">本地下载</a>';
+                } else if (extentname.length === 0) {
+                    return '';
+                } else if (wpKcfinderType === 'videos') {
+                    html = '[video width="800" height="450" ' + extentname + '="' + url + '"][/video]';
+                } else if (wpKcfinderType === 'audios') {
+                    html = '[audio ' + extentname + '="' + url + '"][/audio]'
                 }
                 return html;
             }
