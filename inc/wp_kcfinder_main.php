@@ -75,7 +75,7 @@
                 }
 
                 if (wpKcfinderType === 'images') {
-                    html = '<img src="' + url + '"/>'
+                    html = '<img src="' + url + '" class="alignnone" />'
                 } else if (wpKcfinderType === 'files') {
                     html = '<a class="download" href="' + url + '" target="_blank">本地下载</a>';
                 } else if (extentname.length === 0) {
